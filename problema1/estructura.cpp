@@ -5,23 +5,63 @@ int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);  
     int N; while(cin>>N){
 
+        set<string> opciones;
+        opciones.insert("stack");opciones.insert("queue");opciones.insert("priority queue");
+
+        int operacion,valor;
         stack<int> stackp;
         queue<int> queuep;
         priority_queue<int> pqueuep;
-        queue<string> opciones;
 
-        int operacion,valor;
-        cin>>operacion>>valor;
-
-        if(operacion==2){cout<<"impossible"<<endl;}
-        else{
-            while(N--){
-            int operacion, valor;
+        for (int i=0;i<N;i++){
             cin>>operacion>>valor;
-        }}
+
+            if(i==0 and operacion==2){
+                opciones.erase(opciones.find("stack"));
+                opciones.erase(opciones.find("queue"));
+                opciones.erase(opciones.find("priority queue"));
+                break;}
+            if (operacion==1){
+                stackp.push(valor);
+                queuep.push(valor);
+                pqueuep.push(valor);
+            }else{
+                if(opciones.find("stack")!=opciones.end() and stackp.top()!=valor)
+                {opciones.erase(opciones.find("stack"));}
+                if(opciones.find("queue")!=opciones.end() and queuep.front()!=valor)
+                {opciones.erase(opciones.find("queue"));}
+                if(opciones.find("priority queue")!=opciones.end() and pqueuep.top()!=valor)
+                {opciones.erase(opciones.find("priority queue"));}
+                stackp.pop();queuep.pop();pqueuep.pop();
+            }}
+
+        if(opciones.size()>1){cout<<"not sure"<<endl;}
+        else if(opciones.size()<1){cout<<"impossible"<<endl;}
+        else{
+            auto result = opciones.begin();
+            cout<<(*result)<<endl;}
     }
 return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 bool stack_comprobacion(vector<vector<int>> operaciones){
     stack<int> stackprueba;
