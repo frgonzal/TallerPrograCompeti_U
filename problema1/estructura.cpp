@@ -1,6 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+int main(){
+    ios_base::sync_with_stdio(0);cin.tie(0);  
+    int N; while(cin>>N){
+
+        stack<int> stackp;
+        queue<int> queuep;
+        priority_queue<int> pqueuep;
+        queue<string> opciones;
+
+        int operacion,valor;
+        cin>>operacion>>valor;
+
+        if(operacion==2){cout<<"impossible"<<endl;}
+        else{
+            while(N--){
+            int operacion, valor;
+            cin>>operacion>>valor;
+        }}
+    }
+return 0;
+}
 
 bool stack_comprobacion(vector<vector<int>> operaciones){
     stack<int> stackprueba;
@@ -36,7 +57,7 @@ bool priority_comprobacion(vector<vector<int>> operaciones){
     }return true;
 }
 
-int main(){
+int otrafuncion(){//lenta
     ios_base::sync_with_stdio(0);cin.tie(0);
     int N; while(cin >> N){
 
