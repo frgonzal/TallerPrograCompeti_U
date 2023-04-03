@@ -24,6 +24,12 @@ int main(){
     }
     cout<<iguales<<endl;
     return 0;
+
+    //algo mas lento segun yo
+    //para cada mapa usar n(n-1)/2
+    //for (auto [llave,valor]: mapa){
+        //ir sumando...
+    //}
 }
 
 
