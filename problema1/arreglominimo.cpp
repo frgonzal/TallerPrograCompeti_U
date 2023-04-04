@@ -13,24 +13,16 @@ int main(){
 
     int A[n];
     multiset<int> B;
-    int N[n];
-    for(int i=0;i<n;i++){
-        int a;
-        cin>>a;
-        A[i]=a;
-    }
-    for(int i=0;i<n;i++){
-        int b;
-        cin>>b;
-        B.insert(b);
-    }
+
+    for(int i=0;i<n;i++){int a;cin>>a;A[i]=a;}
+
+    for(int i=0;i<n;i++){int b;cin>>b;B.insert(b);}
+
     for (int i=0;i<n;i++){
         auto itr = B.lower_bound(n-A[i]);
-
-        if(itr == B.end()){
-            itr = B.begin();
-        }
-        cout<<(A[i]+*itr)%n;
+        if(itr == B.end()){itr = B.begin();}
+        cout<<(A[i]+*itr)%n<<" ";
+        B.erase(itr);
     }
     return 0;
 }
