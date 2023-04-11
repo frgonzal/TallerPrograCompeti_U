@@ -23,7 +23,7 @@ void bfs(int n, int s, vector<vector<int>> grafo, vector<int> &dist, vector<int>
 }
 
 int main(){
-    //ios_base::sync_with_stdio(0);cin.tie(0);
+    ios_base::sync_with_stdio(0);cin.tie(0);
     int n,m;
     cin>>n>>m;
     vector<vector<int>> grafo(n);
@@ -41,10 +41,20 @@ int main(){
 
     bfs(n,s,grafo,dist,parent);
 
-    if (dist[n-1]==-1){cout<<"impossible";}
+    if (dist[n-1]==-1){cout<<"IMPOSSIBLE";}
     else{
-        //agregar camino
-        cout<<dist[n-1]+1<<"\n";
+        int distancia = dist[n-1]+1;
+        cout<<distancia<<"\n";
+
+        stack<int> recorrido;
+        int nodo = n-1;
+        for(int i=0;i<distancia;i++){
+            recorrido.push(nodo+1);
+            nodo = parent[nodo];
+        }
+        for(int i=0;i<distancia;i++){
+            cout<<recorrido.top()<<" ";recorrido.pop();
+        }
     } 
 
     return 0;
