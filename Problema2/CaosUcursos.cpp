@@ -1,41 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
-//usar no recursiva, se exceede lim memoria
-int ContarPersonas(int PrimeraPersona, vector<vector<int>> GrafoPersonas, vector<int> &visited){
-    visited[PrimeraPersona] = 1;
-    int Total=1;
-    for(int persona: GrafoPersonas[PrimeraPersona]){
-        if (visited[persona]==0){
-            Total+=ContarPersonas(persona,GrafoPersonas,visited);
+int ContarPersonas(int NumeroPersonas, int PrimeraPersona, vector<vector<int>> GrafoPersonas){
+    vector<int> visited(NumeroPersonas);
+    stack<int> Pila;
+    Pila.push(PrimeraPersona);
+    int Total = 0;
+    while(!Pila.empty()){
+        int persona1 = Pila.top();Pila.pop();
+        visited[persona1] = 1;
+        Total += 1;
+        for(int persona2: GrafoPersonas[persona1]){
+            if(visited[persona2]==0){
+                visited[persona2]=1;
+                Pila.push(persona2);
+            }
         }
     }
     return Total;
 }
 
 int main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+    //ios_base::sync_with_stdio(0);cin.tie(0);
     int n;cin>>n;
     vector<vector<int>> Personas(n);
     int comunidades;cin>>comunidades;
+    vector<set<int>> NoRep(n);
 
     for(int i=0;i<n;i++){Personas[i].push_back(i);}
     while(comunidades--){
         int integrantes;cin>>integrantes;
-        vector<int> Lista_integrantes(integrantes);
-        for(int i=0;i<integrantes;i++){
-            int integrante;cin>>integrante;
-            Lista_integrantes[i]=integrante-1;
+
+        int int1;cin>>int1;
+        int int2;
+        for(int i=0; i<integrantes-1; i++){
+            cin>>int2;
+            Personas[int1-1].push_back(int2-1);
+            Personas[int2-1].push_back(int1-1);
+            int1 = int2;
         }
-        for(int integrante1: Lista_integrantes){
-        for(int integrante2: Lista_integrantes){
-            if (integrante1!=integrante2){
-                Personas[integrante1].push_back(integrante2);}}}
     }
+    for(int i=0; i<n;i++){cout<<endl;
+    for(int intg2:Personas[i]){
+        cout<< intg2 << " ";
+    }}
     for(int i=0;i<n;i++){
         vector<int> visited(n);
-        cout << ContarPersonas(i,Personas,visited)<<" ";}
+        //cout << ContarPersonas(n,i,Personas)<<" ";
+        }
 
     return 0;
 }
