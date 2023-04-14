@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int ContarPersonas(int NumeroPersonas, int PrimeraPersona, vector<vector<int>> GrafoPersonas){
-    vector<int> visited(NumeroPersonas);
+int ContarPersonas(int Num, int PrimeraPersona, vector<vector<int>> GrafoPersonas){
+    vector<int> visited(Num);
     stack<int> Pila;
     Pila.push(PrimeraPersona);
     int Total = 0;
+
     while(!Pila.empty()){
         int persona1 = Pila.top();Pila.pop();
         visited[persona1] = 1;
@@ -20,7 +21,6 @@ int ContarPersonas(int NumeroPersonas, int PrimeraPersona, vector<vector<int>> G
     return Total;
 }
 
-
 int main(){
     int n;cin>>n;
     vector<vector<int>> Personas(n);
@@ -32,13 +32,17 @@ int main(){
         if(participantes>0){
             int int1; cin>>int1; int1--;
             participantes--;
+
             while(participantes--){
                 int int2;cin>>int2; int2--;
                 if (Repetidos[int1].find(int2)==Repetidos[int1].end()){
+
                     Personas[int1].push_back(int2);
                     Repetidos[int1].insert(int2);
+
                     Personas[int2].push_back(int1);
                     Repetidos[int2].insert(int1);
+                    
                     int1 = int2;}
         }}
     }
@@ -47,17 +51,7 @@ int main(){
         vector<int> visited(n);
         cout << ContarPersonas(n,i,Personas)<<" ";
         }
-    return 0;
-}
-
-
-int main1(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
-    int n_personas;cin>>n_personas;
-    int n_comunidades;cin>>n_comunidades;
-    vector<vector<int>> Grafo(n_personas+n_comunidades);
-    
-
 
     return 0;
 }
+
