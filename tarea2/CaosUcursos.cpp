@@ -1,7 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int ContarPersonas(int NumeroPersonas, int PrimeraPersona, vector<vector<int>> GrafoPersonas){
+int ContarPersonas(int NumeroPersonas, int PrimeraPersona, vector<vector<int>> GrafoPersonas,vector<int> &Posicion){
+    if(Posicion[PrimeraPersona]!=-1){
+        return Posicion[Posicion[PrimeraPersona]];
+    }
     vector<int> visited(NumeroPersonas);
     stack<int> Pila;
     Pila.push(PrimeraPersona);
@@ -10,6 +13,7 @@ int ContarPersonas(int NumeroPersonas, int PrimeraPersona, vector<vector<int>> G
         int persona1 = Pila.top();Pila.pop();
         visited[persona1] = 1;
         Total += 1;
+        Posicion[persona1]=PrimeraPersona;
         for(int persona2: GrafoPersonas[persona1]){
             if(visited[persona2]==0){
                 visited[persona2]=1;
@@ -17,6 +21,7 @@ int ContarPersonas(int NumeroPersonas, int PrimeraPersona, vector<vector<int>> G
             }
         }
     }
+    Posicion[PrimeraPersona]=Total;
     return Total;
 }
 
@@ -26,7 +31,6 @@ int main(){
     int n;cin>>n;
     vector<vector<int>> Personas(n);
     int comunidades;cin>>comunidades;
-    vector<set<int>> Repetidos(n);
 
     while(comunidades--){
         int participantes;cin>>participantes;
@@ -36,18 +40,20 @@ int main(){
             participantes--;
             while(participantes--){
                 cin>>int2; int2--;
-            if(Repetidos[int1].find(int2)==Repetidos[int1].end()){
-                Personas[int1].push_back(int2);
-                Repetidos[int1].insert(int2);
-                int1 = int2;}}
-
-            if(Repetidos[int2].find(primero)==Repetidos[int2].end()){
+                if(Personas[int2].size()==1){
+                   Personas[int1].push_back(Personas[int2][0]);
+                   Personas[int2].clear();
+                   int1 = int2;
+                }else{
+                    Personas[int1].push_back(int2);
+                    int1 = int2;}
+                }
                 Personas[int2].push_back(primero);
-                Repetidos[int2].insert(primero);}}
+        }
     }
-
+    vector<int> Pos(n,-1);
     for(int persona=0;persona<n;persona++){
-        cout << ContarPersonas(n,persona,Personas)<<" ";
+        cout << ContarPersonas(n,persona,Personas,Pos)<<" ";
         }
     return 0;
 }
