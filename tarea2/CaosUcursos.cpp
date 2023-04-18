@@ -1,8 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int ContarPersonas(int Num, int PrimeraPersona, vector<vector<int>> GrafoPersonas){
-    vector<int> visited(Num);
+vector<int> Posiciones;
+vector<vector<int>> Personas;
+vector<int> visited;
+
+int ContarPersonas(int NumeroPersonas, int PrimeraPersona){
+
     stack<int> Pila;
     Pila.push(PrimeraPersona);
     int Total = 0;
@@ -11,47 +15,53 @@ int ContarPersonas(int Num, int PrimeraPersona, vector<vector<int>> GrafoPersona
         int persona1 = Pila.top();Pila.pop();
         visited[persona1] = 1;
         Total += 1;
-        for(int persona2: GrafoPersonas[persona1]){
+
+        Posiciones[persona1]=PrimeraPersona;
+
+        for(int persona2: Personas[persona1]){
             if(visited[persona2]==0){
                 visited[persona2]=1;
                 Pila.push(persona2);
             }
         }
     }
+
+    Posiciones[PrimeraPersona]=Total;
     return Total;
 }
 
 int main(){
-    int n;cin>>n;
-    vector<vector<int>> Personas(n);
-    vector<set<int>> Repetidos(n);
-    int comunidades;cin>>comunidades;
+    ios_base::sync_with_stdio(0);cin.tie(0);
+
+    int n; cin>>n;
+
+    Personas.assign(n, vector<int>(0));
+    visited.assign(n,0);
+    Posiciones.assign(n,-1);
+
+    int comunidades; cin>>comunidades;
+    int participantes, int1, int2;
 
     while(comunidades--){
-        int participantes;cin>>participantes;
+        cin>>participantes;
         if(participantes>0){
-            int int1; cin>>int1; int1--;
             participantes--;
-
+            cin>>int1; int1--;
             while(participantes--){
-                int int2;cin>>int2; int2--;
-                if (Repetidos[int1].find(int2)==Repetidos[int1].end()){
-
-                    Personas[int1].push_back(int2);
-                    Repetidos[int1].insert(int2);
-
-                    Personas[int2].push_back(int1);
-                    Repetidos[int2].insert(int1);
-                    
-                    int1 = int2;}
+                cin>>int2; int2--;
+                Personas[int1].push_back(int2);
+                Personas[int2].push_back(int1);
+                int1=int2;
         }}
     }
 
-    for(int i=0;i<n;i++){
-        vector<int> visited(n);
-        cout << ContarPersonas(n,i,Personas)<<" ";
+    for(int persona=0;persona<n;persona++){
+        if(Posiciones[persona]==-1){
+            cout << ContarPersonas(n,persona)<<" ";
+        }else{
+            cout<<  Posiciones[Posiciones[persona]]<<" ";
         }
+    }
 
     return 0;
 }
-
