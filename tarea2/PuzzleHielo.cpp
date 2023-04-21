@@ -1,43 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
-set<int> X;
-set<int> Y;
 map<int,int> X_pos;
 map<int,int> Y_pos;
 vector<vector<int>> Grafo;
+vector<int> visited;
+int conexos = -1;
 
+void DFS(int coord){
+    stack<int> Pila;
+    Pila.push(coord);
+    
+    while(!Pila.empty()){
+        int coord1 = Pila.top();Pila.pop();
+        visited[coord1] = 1;
 
+        for(int coord2: Grafo[coord1]){
+            if(visited[coord2]==0){
+                visited[coord2]=1;
+                Pila.push(coord2);}
+        }
+    }
 
+}
 
 
 int main(){
+    ios_base::sync_with_stdio(0);cin.tie(0);
     int n;cin>>n;
+    Grafo.assign(n,vector<int>());
+    visited.assign(n,0);
     for (int i=0; i<n; i++){
         int x,y;cin>>x>>y;
+        if(X_pos[x]!=0){
+            Grafo[X_pos[x]-1].push_back(i);
+            Grafo[i].push_back(X_pos[x]-1);}
+        if(Y_pos[y]!=0){
+            Grafo[Y_pos[y]-1].push_back(i);
+            Grafo[i].push_back(Y_pos[y]-1);}
+        X_pos[x] = i+1; Y_pos[y] = i+1;
+    }
 
-        auto itrx = X.find(x);
-        auto itry = Y.find(y);
-        if (itrx!=X.end() && itry!=Y.end()){
-            Grafo[i].push_back(X_pos[x]);
-            Grafo[i].push_back(Y_pos[y]);
-            Grafo[X_pos[x]].push_back(i);
-            Grafo[Y_pos[y]].push_back(i);
-        }else if(itrx!=X.end()){
-            int pos = X_pos[x];
-            Y.insert(y);
-            Y_pos[y] = pos;
-            Grafo[i].push_back(pos);
-        }else if(Y.find(y)!=Y.end()){
-            int pos = Y_pos[y];
-            X.insert(x);
-            X_pos[x] = pos;
-            Grafo[i].push_back(pos);
-        }else{
-            X.insert(x);  Y.insert(y);
-            X_pos[x] = i; Y_pos[y] = i;
+    for(int coordenada=0;coordenada<n;coordenada++){
+        if(visited[coordenada] == 0){
+            conexos++;
+            DFS(coordenada);
         }
     }
+    cout<< conexos <<"\n";
+
     return 0;
 }
