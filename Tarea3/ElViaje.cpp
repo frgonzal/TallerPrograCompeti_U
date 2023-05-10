@@ -20,58 +20,77 @@ int main(){
 		//adj[v].push_back({u, w}); // arista {v,u} con peso w
 	}
 
-	using state = pair<ll,int>; // esto es para escribir state en vez de pair<ll,int>
+	using state = pair<ll,pair<int,int>>; // esto es para escribir state en vez de pair<ll,int>
 	// cola de prioridad que entrega el menor
 	priority_queue <state, vector<state>, greater<state>> pq;
 	// vector de distancias, inicializamos en INF
 	vector <ll> dist(n, INF);
-    vector <pair<int,int>> camino(n,{-1,-1});
+	vector <ll> dist_(n,INF); //distancias del segundo grafo
 
-	pq.push({0,0});
+    vector <pair<int,int>> camino(n,{-1,-1});
+    vector <pair<int,int>> camino_(n,{-1,-1});
+
+	pq.push({0,{0,0}});
 	dist[0] = 0;
 
 	while(!pq.empty()){
-		auto pair_ = pq.top(); // C++17 (structured binding)
+
+		auto pair_ = pq.top();
         ll peso_camino = pair_.first;
-        int u = pair_.second;
+    	int u = pair_.second.first;
 		pq.pop();
 
-		if(peso_camino != dist[u]) continue; // ya revisamos un camino mejor hacia u, ignoramos este
+		if(pair_.second.second == 0){
 
-		for(auto pair_ : adj[u]){ // [v,w] de C++17
-            int v = pair_.first;
-            ll w  = pair_.second;
-			// para cada vecino v de u con peso w
-			if(peso_camino + w < dist[v]){
-				// encontramos un mejor camino hacia v! actualizamos
-				// su distancia y lo agregamos a la cola
-				dist[v] = peso_camino+w;
-                camino[v] = {w,u};
-				pq.push({dist[v], v});
+			if(peso_camino > dist[u]) continue; // ya revisamos un camino mejor hacia u, ignoramos este
+			for(auto pair_ : adj[u]){
+				int v = pair_.first;
+				ll w  = pair_.second;
+				// para cada vecino v de u con peso w
+
+				//caso nos quedamos en el primer grafo
+				if(peso_camino + w < dist[v]){
+					// encontramos un mejor camino hacia v! actualizamos
+					// su distancia y lo agregamos a la cola
+					dist[v]   = peso_camino+w;
+					camino[v] = {w,u};
+					pq.push({dist[v], {v,0}});
+
+				//caso pasamos al segundo grafo
+				if(peso_camino + w/2 < dist_[v]){
+					dist_[v]   = peso_camino+w/2;
+					camino_[v] = {w/2,u};
+					pq.push({dist_[v], {v,1}});
+				}
+			}
+		}
+	}else{
+			if(peso_camino > dist_[u]) continue;
+
+			for(auto pair_: adj[u]){
+				int v = pair_.first;
+				ll w  = pair_.second;
+
+				if(peso_camino+w< dist_[v]){
+					dist_[v]   = peso_camino+w;
+					camino_[v] = {w,u};
+					pq.push({dist_[v], {v,1}});
+				}
 			}
 		}
 	}
 
-    priority_queue<int> caminoT;
 
-    int p = n-1;
-    while(camino[p].first != -1){
-        caminoT.push(camino[p].first);
-        p = camino[p].second;
-    }
-
-    p = caminoT.top();caminoT.pop();
-    ll suma = p/2;
-    while(!caminoT.empty()){
-        p = caminoT.top();caminoT.pop();
-        suma+=p;
-    }
-    cout<<suma<<endl;
-
-
-
-
+	cout<<dist_[n-1]<<endl;
 	// las distancias finales están en "dist"
 
 	return 0;
 }
+//2 grafos
+//(u,v,w)--> ((u,1),(v,1),w  )
+//       --> ((u,0),(v,0),w  )
+//       --> ((u,0),(v,1),w/2)
+
+
+
+

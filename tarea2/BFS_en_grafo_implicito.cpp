@@ -1,3 +1,7 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
 int main(){
 	int n, m;
 	cin >> n >> m;
@@ -15,8 +19,8 @@ int main(){
 		for(int dir=0; dir<4; dir++){
 			int nx = x+dx[dir];
 			int ny = y+dy[dir];
-			if(/* coordenada (nx, ny) está fuera de la grilla */) continue;
-			if(/* hay una muralla, un obstáculo, un nodo que no queremos visitar, etc en (nx, ny) */) continue;
+			if(false/* coordenada (nx, ny) está fuera de la grilla */) continue;
+			if(false /* hay una muralla, un obstáculo, un nodo que no queremos visitar, etc en (nx, ny) */) continue;
 			if(dist[nx][ny] != -1) continue; // ya fue visitado
 			dist[nx][ny] = dist[x][y]+1;
 			q.push({nx,ny});
