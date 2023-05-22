@@ -100,7 +100,7 @@ int main(){
 		// aquí le restaríamos 1 a u y v si fuera necesario
 		u--;
 		v--;
-		if(jerarquia[u].first < jerarquia[v].first){swap(u,v);}//{w, supervisor, supervisado}
+		//if(jerarquia[u].first < jerarquia[v].first){swap(u,v);}//{w, supervisor, supervisado}
 		edges[i] = {w, u, v}; // para kruskal no importa el orden entre u y v
 	}
 	cout << kruskal(n, edges) << '\n';
