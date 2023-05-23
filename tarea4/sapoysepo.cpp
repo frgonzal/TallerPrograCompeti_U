@@ -29,16 +29,26 @@ struct point{
 
 
 int main(){
+    int n;cin>>n; ll x,y;
+    vector<pair<point,bool>> figura(n);
 
-    //pruebas pa ver si la wea funciona
-    point punto1(1,0);
-    point punto2(1,3);//punto 1 y 2 forman recta vertical con x = 1
-    point punto3 = {0,2};//otra forma de asignar valor al punto
-    point punto4(4,0);
+    for(int i=0;i<n;i++){
+        cin>>x>>y;
+        figura[i] = {{x,y},0};
+    }
 
-    cout<<punto3.leftOF(punto1,punto2)<<endl<<punto4.leftOF(punto1,punto2)<<endl;
+    cin>>x>>y;
+    point sapo(x,y);
+    cin>>x>>y;
+    point sepo(x,y);
 
-
+    for(int i=0;i<n;i++){
+        cout<< figura[i].first.leftOF(sepo,sapo) <<endl;
+        //figura[i] = {figura[i].first, figura[i].first.leftOF(sapo,sepo)};
+    }
+    for(int i=0;i<n;i++){
+        //cout<<figura[i].second<<endl;
+    }
 
     return 0;
 }
