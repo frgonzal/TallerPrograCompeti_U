@@ -37,7 +37,7 @@ int main(){
     point punto4(4,0);
 
     cout<<punto3.leftOF(punto1,punto2)<<endl<<punto4.leftOF(punto1,punto2)<<endl;
-
+    
 
 
     return 0;
