@@ -13,7 +13,7 @@ struct point{
     ll operator*(point p){return  x*p.x + y*p.y;}
     ll operator^(point p){return  x*p.y - y*p.x;}
 
-    float dist(){return sqrt(x*x+y*y);}
+    double dist(){return sqrt(x*x+y*y);}
     ll dist2(){return        x*x+y*y;}
 
     bool operator<(point p){return x < p.x;}
@@ -21,54 +21,71 @@ struct point{
     //bool operator==(point p){return x==p.x;}
     bool leftOF(point A, point B){
         return ((B-A)^(*this-A)) >= 0;}
+    bool IN(point A, point B){
+        return ((B-A)^(*this-A)) == 0;}
     void print(){
         cout<<"("<<x<<","<<y<<")"<<endl;
     }
 };
 vector<point> figura;
+vector<point> izq;
+vector<point> der;
 vector<bool> leftof;
+
 int n;
 point sapo;
 point sepo;
 
-ll camino(bool up){
+bool entre(point a, point c, point b){
+    return (( a<c && c<b ) || ( b<c && c<a ));
+}
+
+double camino(bool left, vector<point> &puntos){
     stack<point> pila;
-    bool left;
-    for(int i=0;i<n;i++){
-    if(leftof[i]==up){pila.push(figura[i]);}
-    for(int j=i+1;j<n;j++){
-        if(leftof[i]==up){
-            auto punto = pila.top();pila.pop();
-            //si un punto esta a la izq de la recta que formamos 
-            //entonces nos conviene ir directo a ella
-            if(up){
-                left = figura[i].leftOF(sapo,punto);}
-            else{
-                left = !figura[i].leftOF(sapo,punto);}
-
-            if (left){
-                pila.push(figura[i]);
+    bool leftof;
+    if(puntos.size()>0){
+        pila.push(puntos[0]);
+    for(int i=1;i<puntos.size();i++){ 
+        auto punto = pila.top();pila.pop();
+        if(puntos[i].leftOF(sapo,punto) == left){
+            pila.push(puntos[i]);
+        }else{
+            pila.push(punto);
+            for(int j=i;j<puntos.size();j++){
+                auto punto = pila.top();pila.pop();
+                if( puntos[j].leftOF(punto,sepo) == left){
+                    pila.push(punto);
+                    pila.push(puntos[j]);
                 }else{
-                pila.push(punto);
-                pila.push(figura[i]);}
-        }break;}
+                    pila.push(punto);
+                    break;
+                }
+            }
+            break;
+        }}}
+
+    if(pila.empty()){return (sapo-sepo).dist();}
+
+    double dist = 0;    
+    auto punto1 = pila.top();pila.pop();
+
+    dist += (sepo - punto1).dist();
+
+    //punto1.print();
+    while(!pila.empty()){
+        auto punto2 = pila.top();pila.pop();
+        //punto2.print();
+        dist += (punto1-punto2).dist();
+        punto1 = punto2;
     }
-    auto punto = pila.top(); pila.pop();
-    //
-    //if 
-    //if(up){
-    //    left = .leftOF(sepo,punto);}
-    //else{
-    //    left = !.leftOF(sepo,punto);}
-
-    
-
-
-    return 0;
+    dist += (sapo-punto1).dist();
+    return dist;
 }
 
 int main(){
+    ios_base::sync_with_stdio(0);cin.tie(0);
     cin>>n; ll x,y;
+    int suma = 0;
     //leer puntos
     for(int i=0;i<n;i++){
         cin>>x>>y;
@@ -82,7 +99,12 @@ int main(){
     sort(figura.begin(), figura.end());
     //comprobar si estan arriba o abajo
     for(int i=0;i<n;i++){
-        leftof.push_back(figura[i].leftOF(sapo,sepo));}   
-    cout<<min(camino(0),camino(1))<<endl;
+        if(figura[i].leftOF(sapo,sepo)){
+            izq.push_back(figura[i]);
+            suma++;
+        }else{der.push_back(figura[i]);}} 
+    if(suma==0||suma==n||(!entre(sapo,figura[0],sepo))||(!entre(sapo,figura[figura.size()-1],sepo))){cout<<(sapo-sepo).dist()<<endl;return 0;}
+
+    cout<< min(camino(true,izq),camino(false,der)) << endl;
     return 0;
 }
