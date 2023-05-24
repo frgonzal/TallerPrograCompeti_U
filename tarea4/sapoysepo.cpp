@@ -6,7 +6,6 @@ struct point{
     ll x,y;
     point(ll x=0, ll y=0):x(x), y(y){}
 
-
     point operator+(point p){ return {x + p.x, y + p.y};}
     point operator-(point p){ return {x - p.x, y - p.y};}
 
@@ -30,7 +29,6 @@ struct point{
 vector<point> figura;
 vector<point> izq;
 vector<point> der;
-vector<bool> leftof;
 
 int n;
 point sapo;
@@ -85,7 +83,6 @@ double camino(bool left, vector<point> &puntos){
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);
     cin>>n; ll x,y;
-    int suma = 0;
     //leer puntos
     for(int i=0;i<n;i++){
         cin>>x>>y;
@@ -95,16 +92,25 @@ int main(){
     cin>>x>>y; sapo = {x,y};
     cin>>x>>y; sepo = {x,y};
 
+    //si sapo y sepo estan ambos a la izq de alguna arista entonces se puede llegar directo
+    point punto1 = figura[0];
+    for(int i=1;i<n;i++){
+        if(sapo.leftOF(figura[i],punto1) and sepo.leftOF(figura[i],punto1)){
+            cout<<(sapo-sepo).dist()<<endl; return 0;}
+        punto1 = figura[i];}
+        if(sapo.leftOF(punto1,figura[0]) and sepo.leftOF(punto1,figura[0])){
+            cout<<(sapo-sepo).dist()<<endl; return 0;}
+    //si pasamos esto aseguramos que no existe camino directo
+
+
     //ordenar puntos segun posicion ejex
     sort(figura.begin(), figura.end());
+    //for(int i=0;i<n;i++){figura[i].print();}
     //comprobar si estan arriba o abajo
     for(int i=0;i<n;i++){
         if(figura[i].leftOF(sapo,sepo)){
             izq.push_back(figura[i]);
-            suma++;
         }else{der.push_back(figura[i]);}} 
-    if(suma==0||suma==n||(!entre(sapo,figura[0],sepo))||(!entre(sapo,figura[figura.size()-1],sepo))){cout<<(sapo-sepo).dist()<<endl;return 0;}
-
-    cout<< min(camino(true,izq),camino(false,der)) << endl;
+    cout<< min(camino(true,izq), camino(false,der)) << endl;
     return 0;
 }
