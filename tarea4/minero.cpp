@@ -12,7 +12,7 @@ struct point{
     ll operator*(point p){return  x*p.x + y*p.y;}
     ll operator^(point p){return  x*p.y - y*p.x;}
 
-    double dist(){return sqrt(x*x+y*y);}
+    double dist(){return sqrtl(x*x+y*y);}
     ll dist2(){return        x*x+y*y;}
 
     //version con distancia al centro
@@ -30,26 +30,30 @@ struct point{
 
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);
-    int casos_prueba;cin>>casos_prueba;
+    int casos_prueba; cin>>casos_prueba;
     while(casos_prueba--){
-        int n;cin>>n;
+
+        int n;
+        cin>>n;
         vector<point> diamantes;
         vector<point> mineros;
-        ll x,y;
-        for(int i=0;i<2*n;i++){
+        ll x, y;
+
+        for(int i=0; i<2*n; i++){
             cin>>x>>y;
             if(!x){
                 mineros.push_back({x,y});
             }else{
-                diamantes.push_back({x,y});}
-        }
-        sort(mineros.begin(),mineros.end());
-        double suma;
-        for(int i=0;i<n;i++){
-            //falta forma de encontrar arreglo minimo
-        }
+                diamantes.push_back({x,y});}}
 
-        cout<<suma<<endl;
+        sort(mineros.begin(),mineros.end());
+        sort(diamantes.begin(),diamantes.end());
+
+        double suma = 0;
+        for(int i=0; i<n; i++){
+            suma += (diamantes[i] - mineros[i]).dist();
+        }
+        cout<<fixed<<setprecision(15)<<suma<<endl;
     }
     return 0;
 }
