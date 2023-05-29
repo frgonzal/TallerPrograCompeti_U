@@ -54,7 +54,8 @@ double camino(bool left, vector<point> &puntos){
                 if( puntos[j].leftOF(punto,sepo) == left){
                     pila.push(punto);
                     pila.push(puntos[j]);
-                }else{
+                }else{//si esta adentro de la linea que forman el punto y sepo
+                      //entonces se puede llegar directo
                     pila.push(punto);
                     break;
                 }
@@ -108,9 +109,11 @@ int main(){
     //for(int i=0;i<n;i++){figura[i].print();}
     //comprobar si estan arriba o abajo
     for(int i=0;i<n;i++){
-        if(figura[i].leftOF(sapo,sepo)){
+        if(figura[i].leftOF(sapo,sepo) and !figura[i].IN(sapo,sepo)){
             izq.push_back(figura[i]);
-        }else{der.push_back(figura[i]);}} 
-    cout<< min(camino(true,izq), camino(false,der)) << endl;
+        }else if(!figura[i].leftOF(sapo,sepo)){
+            der.push_back(figura[i]);}} 
+    double minimo = min(camino(true,izq), camino(false, der));
+    cout<<fixed<< setprecision(15) <<minimo<< "\n";
     return 0;
 }
