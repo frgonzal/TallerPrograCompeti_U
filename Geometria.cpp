@@ -11,7 +11,7 @@ struct point{
     point operator+(point p){
         return {x + p.x, y + p.y};}
     point operator-(point p){
-        return {x+p.x, y+p.y};}
+        return {x-p.x, y-p.y};}
     ll operator*(point p){
         return x*p.x + y*p.y;}
     ll operator^(point p){

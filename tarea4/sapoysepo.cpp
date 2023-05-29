@@ -89,7 +89,7 @@ int main(){
         cin>>x>>y;
         figura.push_back({x,y});}
 
-    //leer sapo y sepo
+    //leer sapo y sexo
     cin>>x>>y; sapo = {x,y};
     cin>>x>>y; sepo = {x,y};
 
