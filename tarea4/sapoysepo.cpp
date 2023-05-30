@@ -81,28 +81,21 @@ int main(){
 
     double camino1 = 0;
     double camino2 = 0;
+    //double total=0;
+    //for(int i=0;i<puntos.size();i++){
+    //    total+=puntos[i].dist(puntos[(i+1)%puntos.size()]);
+    //}
 
     bool camino = true;//si estamos en el camino de ida o vuelta
-    pt punto1 = puntos[0];
-    pt punto2;
-    for(int i=1;i<puntos.size();i++){
-        punto2 = puntos[i];
-
-        if(punto1==sapo || punto1==sepo){
-            camino=!camino;}
-
+    for(int i=0;i<puntos.size();i++){
+        if(puntos[i]==sapo || puntos[i]==sepo){
+            camino=!camino;}//cambiamos de camino
+        
         if(camino){
-            camino1+=punto1.dist(punto2);
+            camino1+=puntos[i].dist(puntos[(i+1)%puntos.size()]);
         }else{
-            camino2+=punto1.dist(punto2);}
-
-        punto1=punto2;
+            camino2+=puntos[i].dist(puntos[(i+1)%puntos.size()]);}
     }
-    if(puntos[puntos.size()-1]==sapo || puntos[puntos.size()-1]==sepo){camino=!camino;}
-    if(camino){
-        camino1+=puntos[n-1].dist(puntos[0]);
-    }else{
-        camino2+=puntos[n-1].dist(puntos[0]);}
 
     cout<<fixed<< setprecision(15) <<min(camino1,camino2)<< "\n";
     return 0;
