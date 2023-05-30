@@ -66,7 +66,7 @@ int main(){
     cin>>x>>y;
     pt sepo = {x,y};
     puntos.push_back({x,y});
-
+    
     convex_hull(puntos, true);
 
     //necesariamente uno debe estar en el convex hull? si no fuera asi
@@ -85,7 +85,7 @@ int main(){
     bool camino = true;//si estamos en el camino de ida o vuelta
     pt punto1 = puntos[0];
     pt punto2;
-    for(int i=1;i<n+2;i++){
+    for(int i=1;i<puntos.size();i++){
         punto2 = puntos[i];
 
         if(punto1==sapo || punto1==sepo){
@@ -98,7 +98,7 @@ int main(){
 
         punto1=punto2;
     }
-    if(puntos[n-1]==sapo || puntos[n-1]==sepo){camino=!camino;}
+    if(puntos[puntos.size()-1]==sapo || puntos[puntos.size()-1]==sepo){camino=!camino;}
     if(camino){
         camino1+=puntos[n-1].dist(puntos[0]);
     }else{
