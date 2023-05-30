@@ -29,8 +29,8 @@ int main(){
 
     int contador = 0;
     for(auto recta: rectas){
-        if(    ( izq(recta,casa) and !izq(recta,fcgm)) 
-            || (!izq(recta,casa) and  izq(recta,fcgm)) ){
+        if(    ( izq(recta,casa) && !izq(recta,fcgm)) 
+            || (!izq(recta,casa) &&  izq(recta,fcgm)) ){
                 contador++;} 
     }
     cout<<contador<<"\n";
