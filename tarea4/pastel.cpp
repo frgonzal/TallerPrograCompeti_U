@@ -41,6 +41,10 @@ struct Point{
 	friend ostream& operator<<(ostream& os, const Point &p) {
 		return os << "(" << p.x << "," << p.y << ")";
 	}
+	bool leftOF(Point A, Point B){
+		return ((B-A)^(*this-A));
+
+	}
 };
 
 /* Retorna -1, 0 o 1 dependiendo del sentido de giro de b a c partiendo de a.
@@ -85,16 +89,30 @@ int main(){
 	ios_base::sync_with_stdio(0); cin.tie(0);
 	/* Ejemplo de uso. Leemos n puntos e imprimimos su convex hull
 	 */
-	int n;
-	cin >> n;
-	vector <Point<int>> pts(n);
-	for(int i=0; i<n; i++){
-		cin >> pts[i];
+	int N,M;
+	cin >> N >> M;
+	vector <Point<long long>> chocolates(N);
+	vector <Point<long long>> frutillas(M);
+
+	for(int i=0; i<N; i++){
+		cin >> chocolates[i];}
+	for(int i=0; i<M; i++){
+		cin >> frutillas[i];}
+
+	//hull frutillas
+	vector <Point<int>> hull = convex_hull(frutillas);
+	Point primero = hull[0];
+	vector<Point> choc;
+	for(int i=0;i<hull.size();i++){
+		for(Point chocolate: chocolates){
+			if(chocolate.leftOF(hull[i],hull[i+1])){
+				choc.push_back(chocolate);
+			}
+		}
+
+		
 	}
-	vector <Point<int>> hull = convex_hull(pts);
-	cout << hull.size() << '\n';
-	for(auto p : hull){
-		cout << p.x << ' ' << p.y << '\n';
-	}
+
+
 	return 0;
 }
