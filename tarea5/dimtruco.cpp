@@ -1,39 +1,44 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-ll N, K, max_N, mayores_K, cuadrados_perfectos;
+ll N, K, k_, max_N, mayores_K, cuadrados_perfectos;
 
 void Primos(){
-    ll ma_k = 0;
-    ll mi_k = 0;
-    ll ks = (ll) sqrt(K);
-    vector<int> Criba(max_N+1, 0);// O(nlogn)
-    for(int i=2; i*i<=max_N+1; i++){
-        for(int j=i*i; j<max_N+1; j+=i){
+
+    //potencialmente todos pueden ser primos (menos 1)
+    cuadrados_perfectos =  max_N - 1;
+
+    //todos los numeros cuyos cuadrados son menores que K (menos 1)
+    ll p_menores_k = k_;
+    p_menores_k--;
+
+    vector<int> Criba(max_N+1, 0);
+    for(int i=2; i*i<=max_N; i++){
+        for(int j=i*i; j<=max_N; j+=i){//avanzar en los multiplos
             if(!Criba[j]){
-                if(j>ks)ma_k++;
-                else mi_k++;
+                //cout<< j <<","<< i <<" ";
+                cuadrados_perfectos--;//si leo un nuevo numero que no es primo
+                if(j <= k_) p_menores_k--;
+                //si leo un numero cuyo cuadrado es menor o igual a k
+                //entonces es una opcion menos
                 Criba[j]=1;
             }
         }
     }
-    //ks el numero que divide la Criba
-    // ma_k los menores a k
-    // mi_k los mayores a k
-    // max_N - (mi_k + ma_k + 1) == primos totales //el 1 no se cuenta
-    // ks - (mi_k + 1)  = primos menores que k
-    // primos totales - primos menores que k = primos mayores que k
-    cuadrados_perfectos = max_N - (mi_k + ma_k + 1);
-    mayores_K = (cuadrados_perfectos) - (ks - mi_k - 1);
+    mayores_K = cuadrados_perfectos - p_menores_k;
+    //cout<<"\n";
 }    
 
 int main(){
+    ios_base::sync_with_stdio(0);cin.tie(0);
     int T;cin>>T;
     while(T--){
     //Numero de primos cuyos cuadrados son menores que N
     cin>>N>>K;
     //primo maximo == (ll) sqrt(N)
     max_N = (ll) sqrt(N);
+    k_ = (ll) sqrt(K);
+    //cout<<max_N<<"\n";
     Primos();
     cout<<cuadrados_perfectos<<" ";
     cout<<mayores_K<<"\n";

@@ -21,29 +21,27 @@ using namespace std;
 
 
 //Numeros Primos
-bool esPrimo(int x){
-    for(int i=0; i*i<=x; i++){// O(sqrt(x))
-        if (x%i == 0) return false;
-    }
-    return true;
-}
+//bool esPrimo(int x){
+//    for(int i=0; i*i<=x; i++){// O(sqrt(x))
+//        if (x%i == 0) return false;
+//    }
+//    return true;
+//}
 
-
-bool esPrimo(int x){
-    vector<int> Criba(x);// O(nlogn)
+bool esPrimo(int x){// O(nlogn)
+    vector<int> Criba(x+1,0);// considerando el 0
+    Criba[0]=1;Criba[1]=1;
     for(int i=2;i*i<=x;i++){
-        for(int j=i*i;j<x;j++){
-       //partir marcando de i*i, ya que los
-       //multiplos anteriores ya fueron marcados 
+        for(int j=i*i;j<=x;j+=i){
+            Criba[j]=1;
         }
     }
+    return !Criba[x];
 }
-
-
 // a*x = 1 mod m
 
 //pequeño teorema de fermat:
-//si n es primo
+//si m es primo
 // a^(m-1) = 1 mod m
 // a^(m-2)*a = 1 mod m
 
@@ -58,3 +56,8 @@ bool esPrimo(int x){
 
 
 
+int main(){
+    int m; cin>>m;
+    cout<<esPrimo(m)<<endl;
+    return 0;
+}
