@@ -43,6 +43,7 @@ int main(){
     int T;cin>>T;
     for(int m=0;m<T;m++){
         cin>>N>>K;
+        if(K>N) K=N;
         N = (ll) sqrt(N);
         max_n = max(max_n, N);
         n_casos.push_back(N);
