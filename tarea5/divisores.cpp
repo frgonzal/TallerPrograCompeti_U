@@ -17,19 +17,41 @@
 using namespace std;
 typedef long long ll;
 
-int main(){
-    ll n; cin>>n;
+ll sum_s(ll n){
     ll ans = 0;
-    for(int i=1;i<=sqrt(n);i++){
+    for(int i=1; i<=sqrt(n); i++){
         int q = n/i;
+
         int limit = n/q;
-        int cuantos = n/q+1-q;
+        int cuantos = n/q + 1 + q;
 
         int suma = cuantos*i;
-
         ans += suma;
-
     }
-    cout<<ans<<"\n";
+    return ans;
+}
+ll sum_s1(int n){
+    ll ans = 0;
+    for(int i=1;i<=n;i++){
+        ans += i*(n/i);
+    }
+    return ans;
+}
+ll sum_s2(int n){
+    ll ans = n - 1 + n*(n+1)/2;
+    ll sqrt_n = (ll) sqrt(n); 
+    for(int i=2; i <=sqrt_n; i++){
+        ans += i*( n/i - 1 ); //numero por apariciones 
+        if( (n/i) > i ) ans += (n/i)*(n/(n/i) - 1);
+    }
+    return ans;
+}
 
+int main(){
+    ll n; cin>>n;
+    ll ans;
+    ans = sum_s1(n);
+    cout<<ans%((ll)1e19+7)<<"\n";
+    ans = sum_s2(n);
+    cout<<ans%((ll)1e19+7)<<"\n";
 }
