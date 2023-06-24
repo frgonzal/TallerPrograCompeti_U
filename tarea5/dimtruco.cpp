@@ -1,47 +1,62 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-ll N, K, k_, max_N, mayores_K, cuadrados_perfectos;
+ll N, K, mayores_K, cuadrados_perfectos;
+ll max_n = 0;
+vector<ll> n_casos;
+vector<ll> k_casos;
+vector<ll> criba;
 
-void Primos(){
+void Criba(){
+    ll primos_ = 0;
+    for(ll p=2; p<=max_n; p++){
+        if(!criba[p]){
+            primos_++;
+            criba[p] = primos_;//cantidad de primos <= a p
+            for(ll j=p*p; j<=max_n; j+=p){
+                criba[j] = -1;
+        }}
+    }
+}
 
-    //potencialmente todos pueden ser primos (menos 1)
-    cuadrados_perfectos =  max_N - 1;
+void Primos(ll n, ll k){
+    cuadrados_perfectos = 0;
 
-    //todos los numeros cuyos cuadrados son menores que K (menos 1)
-    ll p_menores_k = k_;
-    p_menores_k--;
-
-    vector<int> Criba(max_N+1, 0);
-    for(int i=2; i*i<=max_N; i++){
-        for(int j=i*i; j<=max_N; j+=i){//avanzar en los multiplos
-            if(!Criba[j]){
-                //cout<< j <<","<< i <<" ";
-                cuadrados_perfectos--;//si leo un nuevo numero que no es primo
-                if(j <= k_) p_menores_k--;
-                //si leo un numero cuyo cuadrado es menor o igual a k
-                //entonces es una opcion menos
-                Criba[j]=1;
-            }
+    for(ll i=n; i>=2; i--){
+        if(criba[i]!=-1){
+            cuadrados_perfectos = criba[i];
+            break;
         }
     }
-    mayores_K = cuadrados_perfectos - p_menores_k;
-    //cout<<"\n";
+
+    mayores_K = cuadrados_perfectos;
+    for(ll i=k; i>=2; i--){
+        if(criba[i]!=-1){
+            mayores_K = cuadrados_perfectos - criba[i];
+            break;
+        }
+    }
 }    
 
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);
     int T;cin>>T;
-    while(T--){
-    //Numero de primos cuyos cuadrados son menores que N
-    cin>>N>>K;
-    //primo maximo == (ll) sqrt(N)
-    max_N = (ll) sqrt(N);
-    k_ = (ll) sqrt(K);
-    //cout<<max_N<<"\n";
-    Primos();
-    cout<<cuadrados_perfectos<<" ";
-    cout<<mayores_K<<"\n";
+    for(int m=0;m<T;m++){
+        cin>>N>>K;
+        if(K>N) K=N;
+        N = (ll) sqrt(N);
+        max_n = max(max_n, N);
+        n_casos.push_back(N);
+        k_casos.push_back((ll) sqrt(K));
+    }
+
+    criba.assign(max_n+1,0);
+    Criba();
+    
+    for(int m=0;m<T;m++){
+        Primos(n_casos[m], k_casos[m]);
+        cout<<cuadrados_perfectos<<" ";
+        cout<<mayores_K<<"\n";
     }
     return 0;
 }
