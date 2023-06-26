@@ -1,57 +1,30 @@
-//S(n) = 1 + 2 + 3 + 6...
-
-//n = 12
-//1 --> 1 
-//2     1 2
-//3     1 3
-//4     1 2 4
-//5     1 5
-//6     1 2 3 6
-//7     1 7
-//8     1 2 4 8
-//9     1 3 9
-//10    1 2 5 10
-//11    1 11
-//12    1 2 3 4 6 12
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
+ll max_ = 1e9 + 7;
 
 ll sum_s(ll n){
     ll ans = 0;
-    for(int i=1; i<=sqrt(n); i++){
-        int q = n/i;
+    for(ll i=1; i<=n; i++){
+        ll q = n/i;
+        if(i != n/q){   // (( ((a%c)-(b%c))%c )+c)%c
+            ll a = (((n/q)%max_)*((n/q+1)%max_))%max_;
+            ll b = ((i%max_)*((i-1)%max_))%max_;
+            ll suma = (( (((a%max_) - (b%max_))%max_ )+max_ )%max_ )/2;
 
-        int limit = n/q;
-        int cuantos = n/q + 1 + q;
-
-        int suma = cuantos*i;
-        ans += suma;
+            suma = ((q%max_)*(suma%max_))%max_;
+            ans = ((ans)%max_ + (suma)%max_)%max_; 
+            //cout<<i<<" : "<<q<<" : "<< suma <<endl;
+            i = n/q;
+        }
+        else{
+            ans = ((ans)%max_+(q*i)%max_)%max_;
+        }
     }
     return ans;
 }
-ll sum_s1(int n){
-    ll ans = 0;
-    for(int i=1;i<=n;i++){
-        ans += i*(n/i);
-    }
-    return ans;
-}
-ll sum_s2(int n){
-    ll ans = n - 1 + n*(n+1)/2;
-    ll sqrt_n = (ll) sqrt(n); 
-    for(int i=2; i <=sqrt_n; i++){
-        ans += i*( n/i - 1 ); //numero por apariciones 
-        if( (n/i) > i ) ans += (n/i)*(n/(n/i) - 1);
-    }
-    return ans;
-}
-
 int main(){
     ll n; cin>>n;
-    ll ans;
-    ans = sum_s1(n);
-    cout<<ans%((ll)1e19+7)<<"\n";
-    ans = sum_s2(n);
-    cout<<ans%((ll)1e19+7)<<"\n";
+    ll ans = sum_s(n);
+    cout<<ans<<"\n";
 }
