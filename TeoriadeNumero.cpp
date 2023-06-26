@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+typedef long long ll;
 //modulo
 //   a%b = a - (a//b)*b
 
@@ -28,11 +29,12 @@ using namespace std;
 //    return true;
 //}
 
-bool esPrimo(int x){// O(nlogn)
-    vector<int> Criba(x+1,0);// considerando el 0
+bool esPrimo(ll x){// O(nlogn)
+    vector<ll> Criba(x+1,0);// considerando el 0
     Criba[0]=1;Criba[1]=1;
-    for(int i=2;i*i<=x;i++){
-        for(int j=i*i;j<=x;j+=i){
+    for(ll i=2;i*i<=x;i++){
+        if(i%100==0)cout<<i<<endl;
+        for(ll j=i*i;j<=x;j+=i){
             Criba[j]=1;
         }
     }
@@ -57,7 +59,7 @@ bool esPrimo(int x){// O(nlogn)
 
 
 int main(){
-    int m; cin>>m;
+    ll m; cin>>m;
     cout<<esPrimo(m)<<endl;
     return 0;
 }
